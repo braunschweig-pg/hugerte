@@ -16,6 +16,10 @@ const emitExecute = (component: AlloyComponent): void => {
   emit(component, SystemEvents.execute());
 };
 
+const emitToggleMenu = (component: AlloyComponent): void => {
+  emit(component, SystemEvents.toggleMenu());
+};
+
 const dispatch = (component: AlloyComponent, target: SugarElement<Node>, event: string): void => {
   dispatchWith(component, target, event, { });
 };
@@ -58,6 +62,7 @@ export {
   emit,
   emitWith,
   emitExecute,
+  emitToggleMenu,
   dispatch,
   dispatchWith,
   dispatchEvent,

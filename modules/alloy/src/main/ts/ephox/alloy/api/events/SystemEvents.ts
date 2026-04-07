@@ -103,6 +103,10 @@ const dismissTab = prefixName('dismiss.tab');
 const highlight = prefixName('highlight');
 const dehighlight = prefixName('dehighlight');
 
+
+// This event is toggling the menu in split buttons
+const toggleMenu = prefixName('menu.toggle');
+
 export {
 
   focus,
@@ -136,5 +140,7 @@ export {
   externalElementScroll,
 
   highlight,
-  dehighlight
+  dehighlight,
+
+  toggleMenu
 };
