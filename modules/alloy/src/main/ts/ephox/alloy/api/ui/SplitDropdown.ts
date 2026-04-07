@@ -30,17 +30,19 @@ const factory: CompositeSketchFactory<SplitDropdownDetail, SplitDropdownSpec> = 
     });
   };
 
-  const action = (component: AlloyComponent) => {
-    const onOpenSync = switchToMenu;
-    DropdownUtils.togglePopup(detail, Fun.identity, component, externals, onOpenSync, HighlightOnOpen.HighlightMenuAndItem).get(Fun.noop);
-  };
-
-  const openMenu = (comp: AlloyComponent) => {
-    action(comp);
+  const toggleMenu = (component: AlloyComponent) => {
+    DropdownUtils.togglePopup(
+      detail,
+      Fun.identity,
+      component,
+      externals,
+      switchToMenu,
+      HighlightOnOpen.HighlightMenuAndItem
+    ).get(Fun.noop);
     return Optional.some(true);
   };
 
-  const executeOnButton = (comp: AlloyComponent) => {
+  const action = (comp: AlloyComponent) => {
     const button = AlloyParts.getPartOrDie(comp, detail, 'button');
     AlloyTriggers.emitExecute(button);
     return Optional.some(true);
@@ -55,7 +57,12 @@ const factory: CompositeSketchFactory<SplitDropdownDetail, SplitDropdownSpec> = 
           Attribute.set(descriptor.element, 'id', descriptorId);
           Attribute.set(component.element, 'aria-describedby', descriptorId);
         });
-      })
+      }),
+
+      AlloyEvents.run(SystemEvents.toggleMenu(), (component, simulatedEvent) => {
+        toggleMenu(component);
+        simulatedEvent.stop();
+      }),
     ]),
     ...ButtonBase.events(Optional.some(action))
   };
@@ -105,9 +112,9 @@ const factory: CompositeSketchFactory<SplitDropdownDetail, SplitDropdownSpec> = 
         }),
         Keying.config({
           mode: 'special',
-          onSpace: executeOnButton,
-          onEnter: executeOnButton,
-          onDown: openMenu
+          onSpace: action,
+          onEnter: action,
+          onDown: toggleMenu
         }),
         Focusing.config({ }),
         Toggling.config({

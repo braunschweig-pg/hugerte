@@ -56,11 +56,12 @@ const arrowPart = PartType.required<SplitDropdownDetail, ButtonSpec>({
       dom: {
         tag: 'span',
         attributes: {
-          role: 'presentation'
+          role: 'presentation',
+          tabIndex: -1
         }
       },
       action: (arrow: AlloyComponent) => {
-        arrow.getSystem().getByUid(detail.uid).each(AlloyTriggers.emitExecute);
+        arrow.getSystem().getByUid(detail.uid).each(AlloyTriggers.emitToggleMenu);
       },
       buttonBehaviours: Behaviour.derive([
         Toggling.config({
